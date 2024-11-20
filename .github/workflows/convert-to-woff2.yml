@@ -1,0 +1,29 @@
+name: Convert SVG to WOFF2
+
+on: [push]
+
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install svg2woff2
+      run: npm install -g svg2woff2
+
+    - name: Convert SVG to WOFF2
+      run: |
+        mkdir -p woff2
+        for file in svgs/*.svg; do
+          svg2woff2 $file woff2/$(basename "${file%.*}.woff2")
+        done
+    - name: Upload WOFF2 files
+      uses: actions/upload-artifact@v2
+      with:
+        name: woff2-files
+        path: woff2/
