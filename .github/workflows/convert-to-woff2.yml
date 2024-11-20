@@ -22,8 +22,9 @@ jobs:
         for file in svgs/*.svg; do
           svg2woff2 $file woff2/$(basename "${file%.*}.woff2")
         done
+
     - name: Upload WOFF2 files
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: woff2-files
         path: woff2/
